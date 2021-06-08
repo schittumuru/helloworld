@@ -1,0 +1,39 @@
+name: Go
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.15
+
+    - name: Build
+      run: go build -v ./...
+
+    - name: Test
+      run: go test -v ./...
+      
+    - name: Docker git package
+      uses: docker/login-action@v1
+      with:
+        registry: docker.pkg.github.com
+        username: ${{github.actor}}
+        password: ${{secrets.GITHUB_TOKEN}}
+    
+    - name: Docker build & push 
+      uses: docker/build-push-action@v2
+      with:
+        push: true
+        tags: docker.pkg.githu.com/${{github.repository}}/helloworld:latest
+      
