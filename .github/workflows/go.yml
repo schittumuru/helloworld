@@ -35,5 +35,5 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         push: true
-        tags: docker.pkg.githu.com/${{github.repository}}/helloworld:latest
+        tags: docker.pkg.github.com/${{github.repository}}/helloworld:latest
       
